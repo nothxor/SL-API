@@ -92,17 +92,41 @@ public class StationService {
 
         try {
             DeparturesResponse response = this.objectMapper.readValue(jsonData, DeparturesResponse.class);
+            List<Departure> departures =  response.getDepartures();
 
-            if (limit != null) {
-                int realLimit = Math.min(limit, response.getDepartures().size());
-                List<Departure> departures = response.getDepartures().subList(0, realLimit);
-                return new DeparturesResponse(departures, response.getStopDeviations());
+            if (mode != null) {
+                departures = filterByTransportMode(departures, mode);
             }
 
-            return response;
+            if (limit != null) {
+                departures = limitDepartures(departures, limit);
+            }
+
+            return new DeparturesResponse(departures, response.getStopDeviations());
+
         } catch (Exception e) {
             System.err.println("Error parsing departures JSON: " + e.getMessage());
             return new DeparturesResponse(new ArrayList<>(), new ArrayList<>());
         }
+    }
+
+    private List<Departure> filterByTransportMode(List<Departure> departures, TransportMode mode) {
+        return departures.stream()
+                .filter(departure ->
+                        departure.getLine() != null &&
+                        departure.getLine().getTransportMode() != null &&
+                        departure.getLine().getTransportMode() == mode
+                        )
+                .collect(Collectors.toList());
+    }
+
+    private List<Departure> limitDepartures(List<Departure> departures, int limit) {
+        if (limit <= 0) {
+            return departures;
+        }
+
+        return departures.stream()
+                .limit(limit)
+                .collect(Collectors.toList());
     }
 }
