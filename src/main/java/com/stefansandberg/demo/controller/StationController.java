@@ -12,7 +12,11 @@ import java.util.List;
 
 @RestController
 public class StationController {
-    private final StationService stationService = new StationService();
+    private final StationService stationService;
+
+    public StationController(StationService stationService) {
+        this.stationService = stationService;
+    }
 
     @GetMapping("/stations")
     public List<Station> getStations() {
