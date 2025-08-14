@@ -42,8 +42,8 @@ public class StationController {
     public DeparturesResponse getDepartures(
             @PathVariable String id,
             @RequestParam(required = false) Integer limit,
-            @RequestParam(required = false) TransportMode mode
+            @RequestParam(required = false) TransportMode transportMode
             ) {
-        return stationService.getDeparturesForStation(id, limit, mode);
+        return stationService.getDeparturesForStation(id, limit, transportMode);
     }
 }

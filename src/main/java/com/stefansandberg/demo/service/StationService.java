@@ -87,15 +87,21 @@ public class StationService {
         return stationsToReturn;
     }
 
-    public DeparturesResponse getDeparturesForStation(String stationId, Integer limit, TransportMode mode) {
+    public DeparturesResponse getDeparturesForStation(String stationId, Integer limit, TransportMode transportMode) {
         String jsonData = apiService.fetchData(getDeparturesApiUrl(stationId));
 
         try {
             DeparturesResponse response = this.objectMapper.readValue(jsonData, DeparturesResponse.class);
             List<Departure> departures =  response.getDepartures();
 
-            if (mode != null) {
-                departures = filterByTransportMode(departures, mode);
+            System.out.println("Before filtering - departures count: " + departures.size());
+
+            if (transportMode != null) {
+                System.out.println("Mode is not null, filtering...");
+                departures = filterByTransportMode(departures, transportMode);
+            }
+            else {
+                System.out.println("Mode is null, skipping filter");
             }
 
             if (limit != null) {
@@ -110,13 +116,31 @@ public class StationService {
         }
     }
 
+//    private List<Departure> filterByTransportMode(List<Departure> departures, TransportMode mode) {
+//        System.out.println("Filtering for mode: " + mode);
+//        System.out.println("Original departures count: " + departures.size());
+//
+//        return departures.stream()
+//                .filter(departure ->
+//                        departure.getLine() != null &&
+//                        departure.getLine().getTransportMode() != null &&
+//                        departure.getLine().getTransportMode() == mode
+//                        )
+//                .collect(Collectors.toList());
+//    }
+
     private List<Departure> filterByTransportMode(List<Departure> departures, TransportMode mode) {
+        System.out.println("Filtering for mode: " + mode);
+        System.out.println("Original departures count: " + departures.size());
+
         return departures.stream()
-                .filter(departure ->
-                        departure.getLine() != null &&
-                        departure.getLine().getTransportMode() != null &&
-                        departure.getLine().getTransportMode() == mode
-                        )
+                .filter(departure -> {
+                    TransportMode departureMode = departure.getLine().getTransportMode();
+                    System.out.println("Departure mode: " + departureMode + ", target mode: " + mode);
+                    return departure.getLine() != null &&
+                            departure.getLine().getTransportMode() != null &&
+                            departure.getLine().getTransportMode() == mode;
+                })
                 .collect(Collectors.toList());
     }
 
