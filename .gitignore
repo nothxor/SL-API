@@ -38,3 +38,6 @@ out/
 
 ### Local config ###
 **/application-local.properties
+
+### Json data storage ###
+/stations.json

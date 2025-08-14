@@ -5,7 +5,9 @@ import org.springframework.web.reactive.function.client.WebClient;
 
 @Service
 public class ApiService {
-    private final WebClient webClient = WebClient.create();
+    private final WebClient webClient = WebClient.builder()
+            .codecs(configurer -> configurer.defaultCodecs().maxInMemorySize(5 * 1024 * 1024))
+            .build();
 
     public String fetchData(String url) {
         return webClient.get()
