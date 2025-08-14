@@ -2,6 +2,7 @@ package com.stefansandberg.demo.controller;
 
 import com.stefansandberg.demo.model.DeparturesResponse;
 import com.stefansandberg.demo.model.Station;
+import com.stefansandberg.demo.model.enums.TransportMode;
 import com.stefansandberg.demo.service.StationService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -38,7 +39,11 @@ public class StationController {
     }
 
     @GetMapping("/stations/{id}/departures")
-    public DeparturesResponse getDepartures(@PathVariable String id) {
-        return stationService.getDeparturesForStation(id);
+    public DeparturesResponse getDepartures(
+            @PathVariable String id,
+            @RequestParam(required = false) Integer limit,
+            @RequestParam(required = false) TransportMode mode
+            ) {
+        return stationService.getDeparturesForStation(id, limit, mode);
     }
 }

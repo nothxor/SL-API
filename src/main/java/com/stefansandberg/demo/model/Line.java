@@ -1,14 +1,15 @@
 package com.stefansandberg.demo.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.stefansandberg.demo.model.enums.TransportMode;
 
 public class Line {
     private String designation;
 
     @JsonProperty("transport_mode")
-    private String transportMode;
+    private TransportMode transportMode;
 
-    public Line(String designation, String transportMode) {
+    public Line(String designation, TransportMode transportMode) {
         this.designation = designation;
         this.transportMode = transportMode;
     }
@@ -23,11 +24,11 @@ public class Line {
         this.designation = designation;
     }
 
-    public String getTransportMode() {
+    public TransportMode getTransportMode() {
         return this.transportMode;
     }
 
-    public void setTransportMode(String transportMode) {
+    public void setTransportMode(TransportMode transportMode) {
         this.transportMode = transportMode;
     }
 }

@@ -2,9 +2,11 @@ package com.stefansandberg.demo.service;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.stefansandberg.demo.model.Departure;
 import com.stefansandberg.demo.model.DeparturesResponse;
 import com.stefansandberg.demo.model.SLStation;
 import com.stefansandberg.demo.model.Station;
+import com.stefansandberg.demo.model.enums.TransportMode;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -85,16 +87,22 @@ public class StationService {
         return stationsToReturn;
     }
 
-    public DeparturesResponse getDeparturesForStation(String stationId) {
+    public DeparturesResponse getDeparturesForStation(String stationId, Integer limit, TransportMode mode) {
         String jsonData = apiService.fetchData(getDeparturesApiUrl(stationId));
 
         try {
             DeparturesResponse response = this.objectMapper.readValue(jsonData, DeparturesResponse.class);
+
+            if (limit != null) {
+                int realLimit = Math.min(limit, response.getDepartures().size());
+                List<Departure> departures = response.getDepartures().subList(0, realLimit);
+                return new DeparturesResponse(departures, response.getStopDeviations());
+            }
+
             return response;
         } catch (Exception e) {
             System.err.println("Error parsing departures JSON: " + e.getMessage());
             return new DeparturesResponse(new ArrayList<>(), new ArrayList<>());
         }
-
     }
 }
