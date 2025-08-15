@@ -7,7 +7,6 @@ import com.stefansandberg.demo.model.DeparturesResponse;
 import com.stefansandberg.demo.model.SLStation;
 import com.stefansandberg.demo.model.Station;
 import com.stefansandberg.demo.model.enums.TransportMode;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -110,7 +109,10 @@ public class StationService {
         }
     }
 
-    private List<Departure> filterByTransportMode(List<Departure> departures, TransportMode mode) {
+    List<Departure> filterByTransportMode(List<Departure> departures, TransportMode mode) {
+        if (departures == null) {
+            return new ArrayList<>();
+        }
 
         return departures.stream()
                 .filter(departure -> {
@@ -122,7 +124,7 @@ public class StationService {
                 .collect(Collectors.toList());
     }
 
-    private List<Departure> limitDepartures(List<Departure> departures, int limit) {
+    List<Departure> limitDepartures(List<Departure> departures, int limit) {
         if (limit <= 0) {
             return departures;
         }
