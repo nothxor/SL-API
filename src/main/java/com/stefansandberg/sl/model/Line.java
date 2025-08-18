@@ -1,7 +1,7 @@
-package com.stefansandberg.demo.model;
+package com.stefansandberg.sl.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.stefansandberg.demo.model.enums.TransportMode;
+import com.stefansandberg.sl.model.enums.TransportMode;
 
 public class Line {
     private String designation;

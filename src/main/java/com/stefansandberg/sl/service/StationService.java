@@ -1,12 +1,11 @@
-package com.stefansandberg.demo.service;
+package com.stefansandberg.sl.service;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.stefansandberg.demo.model.Departure;
-import com.stefansandberg.demo.model.DeparturesResponse;
-import com.stefansandberg.demo.model.SLStation;
-import com.stefansandberg.demo.model.Station;
-import com.stefansandberg.demo.model.enums.TransportMode;
+import com.stefansandberg.sl.model.Departure;
+import com.stefansandberg.sl.model.DeparturesResponse;
+import com.stefansandberg.sl.model.Station;
+import com.stefansandberg.sl.model.enums.TransportMode;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -30,7 +29,7 @@ public class StationService {
         return "https://transport.integration.sl.se/v1/sites";
     }
 
-    private String getDeparturesApiUrl(String stationId) {
+    private String getDeparturesApiUrl(int stationId) {
         return "https://transport.integration.sl.se/v1/sites/" + stationId + "/departures";
     }
 
@@ -50,11 +49,7 @@ public class StationService {
         }
 
         try {
-            List<SLStation> slStations = this.objectMapper.readValue(jsonData, new TypeReference<List<SLStation>>(){});
-
-            return slStations.stream()
-                    .map(sl -> new Station(String.valueOf(sl.getId()), sl.getName()))
-                    .collect(Collectors.toList());
+            return this.objectMapper.readValue(jsonData, new TypeReference<List<Station>>() {});
 
         } catch (Exception e) {
             System.err.println("Error parsing JSON: " + e.getMessage());
@@ -62,11 +57,11 @@ public class StationService {
         }
     }
 
-    public Station getStationById(String id) {
+    public Station getStationById(int id) {
         List<Station> stations = getAllStations();
 
         for (Station station : stations) {
-            if (station.getId().equals(id)) {
+            if (station.getId() == id) {
                 return station;
             }
         }
@@ -86,7 +81,7 @@ public class StationService {
         return stationsToReturn;
     }
 
-    public DeparturesResponse getDeparturesForStation(String stationId, Integer limit, TransportMode transportMode) {
+    public DeparturesResponse getDeparturesForStation(int stationId, Integer limit, TransportMode transportMode) {
         String jsonData = apiService.fetchData(getDeparturesApiUrl(stationId));
 
         try {

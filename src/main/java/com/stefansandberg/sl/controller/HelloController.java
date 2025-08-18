@@ -1,6 +1,6 @@
-package com.stefansandberg.demo.controller;
+package com.stefansandberg.sl.controller;
 
-import com.stefansandberg.demo.model.HelloResponse;
+import com.stefansandberg.sl.model.HelloResponse;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;

@@ -1,4 +1,4 @@
-package com.stefansandberg.demo.model;
+package com.stefansandberg.sl.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 

@@ -1,8 +1,8 @@
-package com.stefansandberg.demo.service;
+package com.stefansandberg.sl.service;
 
-import com.stefansandberg.demo.model.Departure;
-import com.stefansandberg.demo.model.Line;
-import com.stefansandberg.demo.model.enums.TransportMode;
+import com.stefansandberg.sl.model.Departure;
+import com.stefansandberg.sl.model.Line;
+import com.stefansandberg.sl.model.enums.TransportMode;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -114,4 +114,6 @@ public class StationServiceTest {
 
         assertEquals(0, result.size());
     }
+
+
 }

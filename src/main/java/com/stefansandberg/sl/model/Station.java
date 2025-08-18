@@ -1,28 +1,24 @@
-package com.stefansandberg.demo.model;
+package com.stefansandberg.sl.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class SLStation {
+public class Station {
     private int id;
     private String name;
 
-    public SLStation() {}
+    public Station(int id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+
+    public Station() {}
 
     public int getId() {
         return this.id;
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
     public String getName() {
         return this.name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 }

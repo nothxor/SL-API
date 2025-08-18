@@ -1,4 +1,4 @@
-package com.stefansandberg.demo.model.enums;
+package com.stefansandberg.sl.model.enums;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 

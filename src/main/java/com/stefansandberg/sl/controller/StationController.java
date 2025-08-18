@@ -1,9 +1,9 @@
-package com.stefansandberg.demo.controller;
+package com.stefansandberg.sl.controller;
 
-import com.stefansandberg.demo.model.DeparturesResponse;
-import com.stefansandberg.demo.model.Station;
-import com.stefansandberg.demo.model.enums.TransportMode;
-import com.stefansandberg.demo.service.StationService;
+import com.stefansandberg.sl.model.DeparturesResponse;
+import com.stefansandberg.sl.model.Station;
+import com.stefansandberg.sl.model.enums.TransportMode;
+import com.stefansandberg.sl.service.StationService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -30,7 +30,7 @@ public class StationController {
     }
 
     @GetMapping("/stations/{id}")
-    public ResponseEntity<Station> getStation(@PathVariable String id) {
+    public ResponseEntity<Station> getStation(@PathVariable int id) {
         Station station = stationService.getStationById(id);
         if (station == null) {
             return ResponseEntity.notFound().build();
@@ -40,7 +40,7 @@ public class StationController {
 
     @GetMapping("/stations/{id}/departures")
     public DeparturesResponse getDepartures(
-            @PathVariable String id,
+            @PathVariable int id,
             @RequestParam(required = false) Integer limit,
             @RequestParam(required = false) TransportMode transportMode
             ) {
