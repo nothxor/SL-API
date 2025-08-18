@@ -8,7 +8,7 @@ pipeline {
                   serviceAccountName: default
                   containers:
                   - name: build-deploy
-                    image: gradle:8-jdk17
+                    image: gradle:8-jdk21
                     command:
                     - sleep
                     args:
