@@ -1,0 +1,66 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sl-api-backend
+  labels:
+    app: sl-api-backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: sl-api-backend
+  template:
+    metadata:
+      labels:
+        app: sl-api-backend
+    spec:
+      initContainers:
+        - name: download-jar
+          image: curlimages/curl:8.4.0
+          command: ['sh', '-c']
+          args:
+            - |
+              curl -u $JENKINS_USERNAME:$JENKINS_PASSWORD \
+                "http://192.168.1.111:31305/job/sl-api-pipeline/job/master/lastSuccessfulBuild/artifact/build/libs/sl-api-backend-0.0.1-SNAPSHOT.jar" \
+                -o /shared/app.jar
+          env:
+            - name: JENKINS_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: jenkins-artifact-download
+                  key: username
+            - name: JENKINS_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: jenkins-artifact-download
+                  key: password
+          volumeMounts:
+            - name: shared-storage
+              mountPath: /shared
+      containers:
+        - name: sl-api
+          image: eclipse-temurin:17-jre
+          command: ['java', '-jar', '/app/app.jar']
+          ports:
+            - containerPort: 8080
+          volumeMounts:
+            - name: shared-storage
+              mountPath: /app
+      volumes:
+        - name: shared-storage
+          emptyDir: {}
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: sl-api-service
+spec:
+  type: NodePort
+  ports:
+    - port: 8080
+      targetPort: 8080
+      nodePort: 31081
+      protocol: TCP
+  selector:
+    app: sl-api-backend
