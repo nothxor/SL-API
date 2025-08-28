@@ -21,7 +21,7 @@ spec:
           args:
             - |
               curl -u $JENKINS_USERNAME:$JENKINS_PASSWORD \
-                "http://192.168.1.111:31305/job/sl-api-pipeline/job/master/lastSuccessfulBuild/artifact/build/libs/sl-api-backend-0.0.1-SNAPSHOT.jar" \
+                "http://192.168.1.111:31305/job/sl-api-backend/job/master/lastSuccessfulBuild/artifact/build/libs/sl-api-backend-0.0.1-SNAPSHOT.jar" \
                 -o /shared/app.jar
           env:
             - name: JENKINS_USERNAME
